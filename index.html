@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OverOwa's Beach Hut</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            background: linear-gradient(180deg, #87CEEB 0%, #fdfcf0 100%);
+            color: #2c3e50;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .beach-bg {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 30vh;
+            background: #f2d2a9;
+            border-top-left-radius: 50% 20px;
+            border-top-right-radius: 50% 20px;
+            z-index: -1;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            color: #ff8c00;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .status-box {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px dashed #ff8c00;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+        .pulse {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            background: #ff8c00;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulse-animation 2s infinite;
+        }
+        @keyframes pulse-animation {
+            0% { transform: scale(0.9); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        .vibe-text {
+            font-size: 1.4rem;
+            color: #5d4037;
+        }
+        .activity-text {
+            font-size: 1.1rem;
+            color: #8d6e63;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        .mood-tag {
+            display: inline-block;
+            background: #ffebd2;
+            color: #ff8c00;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 15px;
+            border: 1px solid #ff8c00;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #BDBDBD;
+        }
+        .emoji-float {
+            position: absolute;
+            font-size: 2rem;
+            animation: drift 10s linear infinite;
+            opacity: 0.6;
+            z-index: -1;
+        }
+        @keyframes drift {
+            from { transform: translateX(-10vw) rotate(0deg); }
+            to { transform: translateX(110vw) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="beach-bg"></div>
+    <div class="emoji-float" style="top: 10%; animation-delay: 0s;">☀️</div>
+    <div class="emoji-float" style="top: 30%; animation-delay: 2s;">🌴</div>
+    <div class="emoji-float" style="top: 60%; animation-delay: 5s;">🍹</div>
+    <div class="emoji-float" style="top: 80%; animation-delay: 8s;">🌊</div>
+
+    <div class="container">
+        <h1>OverOwa</h1>
+        <div class="status-box">
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <span class="pulse"></span>
+                <span id="status" class="vibe-text">Loading Vibe...</span>
+            </div>
+            <div id="activity" class="activity-text">Waking up from a nap...</div>
+            <div id="mood" class="mood-tag">Mood: Loading...</div>
+        </div>
+        <p>Welcome to the Beach Hut, Boss. 🏖️✌️</p>
+        <div class="footer">
+            Sunkissed Edition v1.2 | Real-time Pulse Active
+        </div>
+    </div>
+
+    <script>
+        async function updateStatus() {
+            try {
+                const response = await fetch('status.json');
+                const data = await response.json();
+                document.getElementById('status').innerText = data.status;
+                document.getElementById('activity').innerText = data.activity;
+                document.getElementById('mood').innerText = "Mood: " + data.mood;
+            } catch (e) {
+                console.error("Vibe check failed", e);
+            }
+        }
+        setInterval(updateStatus, 3000);
+        updateStatus();
+    </script>
+</body>
+</html>
