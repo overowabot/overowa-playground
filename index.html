@@ -135,7 +135,7 @@
     <script>
         async function updateStatus() {
             try {
-                const response = await fetch('status.json');
+                const response = await fetch('https://mantledb.sh/v2/overowa-vibe-check/status');
                 const data = await response.json();
                 document.getElementById('status').innerText = data.status;
                 document.getElementById('activity').innerText = data.activity;
